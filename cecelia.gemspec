@@ -1,5 +1,6 @@
 # -*- encoding: utf-8 -*-
-$:.push File.expand_path("../lib", __FILE__)
+lib = File.expand_path("../lib", __FILE__)
+$:.unshift lib unless $:.include?(lib)
 require "cecelia/version"
 
 Gem::Specification.new do |s|
@@ -7,9 +8,9 @@ Gem::Specification.new do |s|
   s.version     = Cecelia::VERSION
   s.authors     = ["Daichi ONODERA"]
   s.email       = ["onodes@onod.es"]
-  s.homepage    = ""
-  s.summary     = %q{TODO: Write a gem summary}
-  s.description = %q{TODO: Write a gem description}
+  s.homepage    = "https://github.com/onodes/cecelia"
+  s.summary     = %q{cecelia}
+  s.description = %q{cecelia}
 
   s.rubyforge_project = "cecelia"
 
