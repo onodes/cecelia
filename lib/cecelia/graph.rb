@@ -1,7 +1,9 @@
-require 'cecelia/graph_model.rb'
+require 'sequel'
 
 class Graph
-  def initialize
+  def initialize(db_name)
+    Sequel.sqlite(db_name)
+    require 'cecelia/graph_model.rb'
   end
 
   def add_vertex (attributes="")
