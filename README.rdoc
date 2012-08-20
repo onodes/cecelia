@@ -1,0 +1,41 @@
+= Cecelia
+
+* http://rubygems.org/gems/cecelia
+* https://github.com/onodes/cecelia
+
+== DESCRIPTION
+
+The Cecelia library is used for complex network and graph theory.
+Cecelia automatically save vertices and edges to the database.
+All vertices and all edges are in the database.
+So some methods is transform to a query.
+Therefore Cecelia is low memory, be useful for large complex network and large graph.
+
+== Dependencies
+
+* ruby 1.9.2, 1.9.3
+* sequel
+
+== Developers
+
+To run 
+
+  gem install cecelia
+
+and make network
+
+  cecelia = Cecelia.new("db_name")
+  cecelia.add_vertex(1)
+    => #<Vertices @values={:id=>1, :attributes=>1}> 
+  cecelia.add_vertex(2)
+    => #<Vertices @values={:id=>2, :attributes=>2}>
+  cecelia.add_edge(1,2)
+    => #<Edges @values={:id=>1, :source=>1, :target=>2, :attributes=>""}>
+  cecelia.vertices
+    => [#<Vertices @values={:id=>1, :attributes=>1}>, #<Vertices @values={:id=>2, :attributes=>2}>]
+  cecelia.edges
+    => [#<Edges @values={:id=>1, :source=>1, :target=>2, :attributes=>""}>]
+
+== Authors
+
+Copyright (c) 2012 by Daichi ONODERA (onodes@onod.es)
