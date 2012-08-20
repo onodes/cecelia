@@ -1,7 +1,5 @@
 require 'sequel'
 
-
-
 class GraphModel
   def initialize(db_name)
     DB = Sequel.sqlite(db_name)
