@@ -2,7 +2,7 @@ require 'sequel'
 
 class Graph
   def initialize(db_name)
-    Sequel.sqlite(db_name)
+    @db = Sequel.sqlite(db_name)
     require 'cecelia/graph_model.rb'
   end
 
@@ -18,7 +18,7 @@ class Graph
     end
   end
 
-  def verticies
+  def vertices
     Vertices.all
   end
 
