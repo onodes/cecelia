@@ -6,6 +6,7 @@ class Vertices < Sequel::Model
   unless table_exists?
     set_schema do
       primary_key :id, :autoincrement => true
+      string :label
       string :attributes
     end
     create_table
