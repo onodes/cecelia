@@ -1,4 +1,5 @@
 require 'sequel'
+require 'yaml'
 
 class Graph
   def initialize(db_name)
@@ -6,14 +7,16 @@ class Graph
     require 'cecelia/graph_model.rb'
   end
 
-  def add_vertex (attributes="")
-    Vertices.create(:attributes => attributes)
+  def add_vertex (label = "", attributes => {})
+    unless Vertices.find(:label => label) == nil
+      Vertices.create(:label=> label, :attributes => YAML.dump(attributes))
+    end
   end
 
-  def add_edge(source,target,attributes="")
+  def add_edge(source, target, attributes => {})
     unless Vertices.find(:id => source) == nil && Vertices.find(:id => target) == nil
       if ((Edges.filter(:source => source).filter(:target => target)).all).empty?
-        Edges.create(:source => source, :target => target, :attributes => attributes)
+        Edges.create(:source => source, :target => target, :attributes => YAML.dump(attributes))
       end
     end
   end
