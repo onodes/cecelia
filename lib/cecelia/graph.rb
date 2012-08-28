@@ -32,7 +32,14 @@ class Graph
   end
 
   def neighbors(id)
-    Edges.filter(:source => id).all
+    dataset = nil
+    if id.class == Integer
+      dataset = Edges.filter(:source => id).all
+    elsif id.class == String
+      label = Vertices.find(:label = id)[:id]
+      dataset = Edges.filter(:source => label).all
+    end
+    dataset
   end
 
   def find_vertex(args = {})
