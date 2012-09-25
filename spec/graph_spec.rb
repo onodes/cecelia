@@ -68,7 +68,9 @@ describe Graph,"エッジの追加に関するテスト" do
   end
 
   it "存在しないノード間エッジは禁止" do
-    g.add_edge("100","200").should raise_error
+    size = g.vertices.size
+    g.add_edge("100","200")
+    (g.vertices.size - size).should == 2
   end
 
   it "複数ノードの追加" do
@@ -78,12 +80,13 @@ describe Graph,"エッジの追加に関するテスト" do
   end
 
   it "複数エッジの追加" do
+    size = g.edges.size
     g.add_edge("3","4")
     g.add_edge("5","6")
     g.add_edge("6","7")
     g.add_edge("1","6")
 
-    g.edges.size.should == 5
+    (g.edges.size - size).should == 4
   end
 end
 

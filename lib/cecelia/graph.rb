@@ -18,8 +18,11 @@ class Graph
       begin
         source_id = Vertices.find(:label => source)[:id]
         target_id = Vertices.find(:label => target)[:id]
-      rescue => exc
-         exc
+      rescue
+        add_vertex(source)
+        add_vertex(target)
+        source_id = Vertices.find(:label => source)[:id]
+        target_id = Vertices.find(:label => target)[:id]
       ensure
         add_edge_id(source_id, target_id, attributes = {})
       end
