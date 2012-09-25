@@ -2,7 +2,7 @@ require 'sequel'
 require 'yaml'
 
 class Graph
-  def initialize(db_name)
+  def initialize(db_name = "sqlite:/")
     @db = Sequel.connect(db_name)
     require 'cecelia/graph_model.rb'
   end
@@ -15,9 +15,14 @@ class Graph
 
   def add_edge(source, target, attributes = {})
     if source.class == String && target.class == String
-      source_id = Vertices.find(:label => source)[:id]
-      target_id = Vertices.find(:label => target)[:id]
-      add_edge_id(source_id, target_id, attributes = {})
+      begin
+        source_id = Vertices.find(:label => source)[:id]
+        target_id = Vertices.find(:label => target)[:id]
+      rescue => exc
+         exc
+      ensure
+        add_edge_id(source_id, target_id, attributes = {})
+      end
     else
       add_edge_id(source, target, attributes = {})
     end
@@ -36,7 +41,7 @@ class Graph
     if id.class == Integer
       dataset = Edges.filter(:source => id).all
     elsif id.class == String
-      label = Vertices.find(:label = id)[:id]
+      label = Vertices.find(:label => id)[:id]
       dataset = Edges.filter(:source => label).all
     end
     dataset
@@ -45,7 +50,7 @@ class Graph
   def find_vertex(args = {})
     Vertices.find(args)
   end
-  
+
   def find_edge(args = {})
     Edges.find(args)
   end
@@ -56,6 +61,17 @@ class Graph
 
   def filter_edge(args = {})
     Edges.filter(args)
+  end
+
+  def remove_vertex(label)
+    if label.class == String 
+      Vertices.find(:label => label).delete
+    end
+  end
+
+  def remove_edge(id)
+    id = id.to_i  
+    Edges.find(:id => id).delete
   end
 
   private
