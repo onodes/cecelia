@@ -3,6 +3,9 @@ require 'yaml'
 
 class Graph
   def initialize(db_name = "sqlite:/")
+    if defined? JRUBY_VERSION
+      db_name = "jdbc:" + db_name.sub(":/",":")
+    end
     @db = Sequel.connect(db_name)
     require 'cecelia/graph_model.rb'
   end

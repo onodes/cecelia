@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    cecelia (0.0.4)
+    cecelia (0.0.6)
       rspec
       sequel
       sqlite3
@@ -17,11 +17,12 @@ GEM
     rspec-core (2.11.1)
     rspec-expectations (2.11.3)
       diff-lcs (~> 1.1.3)
-    rspec-mocks (2.11.2)
-    sequel (3.38.0)
+    rspec-mocks (2.11.3)
+    sequel (3.39.0)
     sqlite3 (1.3.6)
 
 PLATFORMS
+  java
   ruby
 
 DEPENDENCIES

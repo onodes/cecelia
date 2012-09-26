@@ -9,7 +9,7 @@ describe Graph,"Iniaialize method" do
   end
 
   it "Graph.new()にSQLiteを指定" do
-    Graph.new("sqlite://hoge.db").should be_true
+    Graph.new("sqlite:hoge.db").should be_true
   end
 
   after(:all) do

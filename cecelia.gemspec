@@ -25,4 +25,7 @@ Gem::Specification.new do |s|
   s.add_dependency('sqlite3')
   s.add_dependency('rspec')
   s.add_dependency('sequel')
+  if defined? JRUBY_VERSION
+    s.add_dependency('jdbc-sqlite3')
+  end
 end
