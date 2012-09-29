@@ -144,15 +144,13 @@ end
 
 describe Graph,"トランザクション関係" do
   let(:g){Graph.new}
-  before(:all) do
-    p Sequel::DATABASES
-  end
 
   it "トランザクション開いて，ノードを一つ追加" do
     size = g.vertices.size
-    g.transaction 
-    #(g.vertices.size - size).should == 988
-    p g.vertices
+    g.transaction do |t|
+      t.add_vertex("10")
+    end
+    (g.vertices.size - size).should == 1
   end
 end
 

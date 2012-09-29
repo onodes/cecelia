@@ -7,12 +7,20 @@ class Graph
       db_name = "jdbc:" + db_name.sub(":/",":")
     end
     @db = Sequel.connect(db_name)
+    @beast = false
     require 'cecelia/graph_model.rb'
   end
+  attr_accessor :beast
 
   def add_vertex (label = "", attributes = {})
-    if Vertices.find(:label => label) == nil
-      p Vertices.create(:label=> label, :attributes => YAML.dump(attributes))
+    unless @beast == true
+      if Vertices.find(:label => label) == nil
+        Vertices.create(:label=> label, :attributes => YAML.dump(attributes))
+      end
+    else
+      if Vertices.find(:label => label) == nil
+        @db[:vertices].insert(:label => label, :attributes => YAML.dump(attributes))
+      end
     end
   end
 
@@ -80,17 +88,17 @@ class Graph
     Edges.find(:id => id).delete
   end
 
-  def transaction(n)
-    @db.transaction do 
-      n.times{|i|
-        self.add_vertex(i.to_s)
-      }
-    end
+  def transaction
+    Vertices.use_transactions = false
+    @db.transaction do
+      yield(self)
+    end 
   end
 
   def db
     @db
   end
+
 
   private
   def add_edge_id(source, target, attributes = {})
