@@ -5,21 +5,20 @@ require './lib/cecelia/graph.rb'
 
 describe Graph,"Iniaialize method" do
   it "Graph.new()に空引数" do
-    Graph.new().should be_true
+    Graph.new.should be_true
   end
 
   it "Graph.new()にSQLiteを指定" do
     Graph.new("sqlite:hoge.db").should be_true
   end
 
-  after(:all) do
-    #File.delete("./hoge.db")
+  after(:each) do
+    Sequel::DATABASES.delete(Sequel::DATABASES.first)
   end
 end
 
 describe Graph, "ノード追加に関するテスト" do
   let(:g){Graph.new}
-
   it "空グラフのノード数" do 
     g.vertices.size.should == 0
   end
@@ -49,11 +48,14 @@ describe Graph, "ノード追加に関するテスト" do
   it "同名ノードの禁止" do
     g.vertices.size.should == 10
   end
+
+  after(:each) do
+    Sequel::DATABASES.delete(Sequel::DATABASES.first)
+  end 
 end
 
 describe Graph,"エッジの追加に関するテスト" do
   let(:g){Graph.new}
-
   #before(:all){10.times{|i| g.add_vertex(i.to_s)}}
 
   it "空グラフのエッジ数" do
@@ -88,12 +90,16 @@ describe Graph,"エッジの追加に関するテスト" do
 
     (g.edges.size - size).should == 4
   end
+
+  after(:each) do
+      Sequel::DATABASES.delete(Sequel::DATABASES.first)
+  end 
 end
 
 describe Graph,"ノード削除に関するテスト" do
   let(:g){Graph.new}
 
-  before(:all){
+  before(:each){
     10.times do |i|
     g.add_vertex(i.to_s)
     end
@@ -105,6 +111,10 @@ describe Graph,"ノード削除に関するテスト" do
     g.remove_vertex("1")
     (size - g.vertices.size).should == 1
   end
+
+  after(:all) do
+    Sequel::DATABASES.delete(Sequel::DATABASES.first)
+  end 
 end
 
 describe Graph,"エッジ削除に関するテスト" do
@@ -126,4 +136,23 @@ describe Graph,"エッジ削除に関するテスト" do
     g.remove_edge("1")
     (size - g.edges.size).should == 1
   end
+
+  after(:all) do
+    Sequel::DATABASES.delete(Sequel::DATABASES.first)
+  end 
 end
+
+describe Graph,"トランザクション関係" do
+  let(:g){Graph.new}
+  before(:all) do
+    p Sequel::DATABASES
+  end
+
+  it "トランザクション開いて，ノードを一つ追加" do
+    size = g.vertices.size
+    g.transaction 
+    #(g.vertices.size - size).should == 988
+    p g.vertices
+  end
+end
+

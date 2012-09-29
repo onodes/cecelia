@@ -12,7 +12,7 @@ class Graph
 
   def add_vertex (label = "", attributes = {})
     if Vertices.find(:label => label) == nil
-      Vertices.create(:label=> label, :attributes => YAML.dump(attributes))
+      p Vertices.create(:label=> label, :attributes => YAML.dump(attributes))
     end
   end
 
@@ -78,6 +78,18 @@ class Graph
   def remove_edge(id)
     id = id.to_i  
     Edges.find(:id => id).delete
+  end
+
+  def transaction(n)
+    @db.transaction do 
+      n.times{|i|
+        self.add_vertex(i.to_s)
+      }
+    end
+  end
+
+  def db
+    @db
   end
 
   private
